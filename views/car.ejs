@@ -1,0 +1,27 @@
+<%- include('partials/head') %>
+<p><a href="/">Back to all cars</a></p>
+<div class="detail">
+ <div>
+  <div class="dmain <%= images.length ? 'ph' : '' %>"><img src="/cars/<%= p.id %>/image<%= sel ? '?n=' + sel.id : '' %>" alt="<%= p.brand %> <%= p.model %>"></div>
+  <% if (images.length > 1) { %><div class="thumbs"><% images.forEach(i => { %><a href="/cars/<%= p.id %>?img=<%= i.id %>"><img src="/cars/<%= p.id %>/image?n=<%= i.id %>" alt="Photo"></a><% }) %></div><% } %>
+ </div>
+ <div class="stack">
+  <h1 style="font-size:clamp(28px,4vw,44px);margin:0"><%= p.brand %> <%= p.model %></h1>
+  <div class="kind"><%= p.category %> · <%= p.fuel %></div>
+  <div class="price" style="font-size:30px"><%= money(p.price_usd) %></div>
+  <p><%= p.description %></p>
+  <% if (p.stock > 0) { %><form method="post" action="/cart/add/<%= p.id %>"><button class="btn acc" style="width:100%">Add to cart</button></form><% } else { %><button class="btn ghost" disabled>Sold out</button><% } %>
+  <h2>Colors</h2>
+  <div class="cols"><% colors.forEach(c => { %><span><i style="background:<%= c.hex %>"></i><%= c.name %><%= c.extra_usd ? ' +' + money(c.extra_usd) : '' %></span><% }) %><% if (!colors.length) { %><span class="kind">No colors listed</span><% } %></div>
+  <h2>Specifications</h2>
+  <dl class="spec">
+   <div><dt>Power</dt><dd><%= num(p.hp, ' hp') %></dd></div><div><dt>Torque</dt><dd><%= num(p.torque_lbft, ' lb-ft') %></dd></div>
+   <div><dt>0-60 mph</dt><dd><%= num(p.zero_to_sixty, ' s') %></dd></div><div><dt>Top speed</dt><dd><%= num(p.top_speed_mph, ' mph') %></dd></div>
+   <div><dt>Engine</dt><dd><%= num(p.engine) %></dd></div><div><dt>Transmission</dt><dd><%= num(p.transmission) %></dd></div>
+   <div><dt>Drivetrain</dt><dd><%= num(p.drivetrain) %></dd></div><div><dt>Seats</dt><dd><%= num(p.seats) %></dd></div>
+   <div><dt>Model year</dt><dd><%= num(p.model_year) %></dd></div><div><dt>Maker</dt><dd><%= p.brand %><%= p.country ? ', ' + p.country : '' %></dd></div>
+   <div><dt>Availability</dt><dd><%= p.stock ? p.stock + ' in stock' : 'Sold out' %></dd></div>
+  </dl>
+ </div>
+</div>
+<%- include('partials/foot') %>

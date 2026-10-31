@@ -1,0 +1,30 @@
+<%- include('partials/head') %>
+<h1>Find your next sports car.</h1>
+<p class="lede">Real models with manufacturer specs and US starting prices. Search, compare and reserve with a 5% deposit.</p>
+<form class="filters" method="get" action="/" role="search">
+ <input type="search" name="q" value="<%= f.q || '' %>" placeholder="Search by brand, model or engine" aria-label="Search cars">
+ <select name="brand" aria-label="Brand"><option value="">All brands</option><% brands.forEach(b => { %><option value="<%= b.id %>" <%= String(f.brand) === String(b.id) ? 'selected' : '' %>><%= b.name %></option><% }) %></select>
+ <select name="category" aria-label="Body type"><option value="">All body types</option><% cats.forEach(c => { %><option value="<%= c.id %>" <%= String(f.category) === String(c.id) ? 'selected' : '' %>><%= c.name %></option><% }) %></select>
+ <select name="fuel" aria-label="Fuel"><option value="">Any fuel</option><% ['Gas','Hybrid','Electric'].forEach(x => { %><option <%= f.fuel === x ? 'selected' : '' %>><%= x %></option><% }) %></select>
+ <select name="price" aria-label="Price range"><option value="">Any price</option>
+  <% [['0-50000','Under $50,000'],['50000-100000','$50,000 to $100,000'],['100000-250000','$100,000 to $250,000'],['250000-','Over $250,000']].forEach(p => { %><option value="<%= p[0] %>" <%= f.price === p[0] ? 'selected' : '' %>><%= p[1] %></option><% }) %></select>
+ <select name="sort" aria-label="Sort"><% [['featured','Featured'],['low','Price: low to high'],['high','Price: high to low'],['fast','Fastest 0-60'],['power','Most power']].forEach(s => { %><option value="<%= s[0] %>" <%= f.sort === s[0] ? 'selected' : '' %>><%= s[1] %></option><% }) %></select>
+ <button class="btn">Apply</button><a class="btn ghost" href="/">Clear</a>
+</form>
+<p class="kind" aria-live="polite">Showing <%= cars.length %> of <%= total %> cars</p>
+<% if (!cars.length) { %><p class="empty">No cars match these filters. Try clearing some.</p><% } %>
+<div class="grid">
+<% cars.forEach(c => { %>
+ <article class="card">
+     <a class="pic<%= c.has_photo ? ' ph' : '' %>" href="/cars/<%= c.id %>"><img src="/cars/<%= c.id %>/image" alt="<%= c.brand %> <%= c.model %>" loading="lazy"></a>
+  <div class="info">
+   <a class="nm" href="/cars/<%= c.id %>"><%= c.brand %> <%= c.model %></a>
+   <div class="kind"><%= c.category %> · <%= c.fuel %><%= c.model_year ? ' · ' + c.model_year : '' %></div>
+   <dl class="s"><div><dt>Power</dt><dd><%= num(c.hp, ' hp') %></dd></div><div><dt>0-60 mph</dt><dd><%= num(c.zero_to_sixty, ' s') %></dd></div><div><dt>Top speed</dt><dd><%= num(c.top_speed_mph, ' mph') %></dd></div></dl>
+   <div class="row"><span class="price"><%= money(c.price_usd) %></span><span class="kind"><%= c.stock ? c.stock + ' in stock' : 'Sold out' %></span></div>
+   <% if (c.stock > 0) { %><form method="post" action="/cart/add/<%= c.id %>"><button class="btn acc">Add to cart</button></form><% } else { %><button class="btn ghost" disabled>Sold out</button><% } %>
+  </div>
+ </article>
+<% }) %>
+</div>
+<%- include('partials/foot') %>

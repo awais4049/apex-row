@@ -1,0 +1,7 @@
+<%- include('../partials/head') %>
+<h2>Orders</h2><%- include('nav') %>
+<p class="kind">Cancelling an order puts its cars back in stock.</p>
+<div class="tw"><table><thead><tr><th>#</th><th>Date</th><th>Customer</th><th>Cars</th><th>Total</th><th>Deposit</th><th>Status</th></tr></thead><tbody>
+<% rows.forEach(o => { %><tr><td><%= o.id %></td><td><%= date(o.created_at) %></td><td><%= o.username %> (<%= o.email %>)</td><td><%= o.items %></td><td><%= money(o.total) %></td><td><%= money(o.deposit_usd) %></td>
+<td><form method="post" action="/admin/orders/<%= o.id %>/status"><select name="status" aria-label="Status of order <%= o.id %>"><% ['reserved','confirmed','delivered','cancelled'].forEach(s => { %><option <%= s === o.status ? 'selected' : '' %>><%= s %></option><% }) %></select> <button class="btn ghost">Update</button></form></td></tr><% }) %></tbody></table></div>
+<%- include('../partials/foot') %>

@@ -1,0 +1,9 @@
+<%- include('partials/head') %>
+<div class="box"><h2>Log in</h2>
+<% if (error) { %><div class="flash err" role="alert"><%= error %></div><% } %>
+<form method="post" action="/login"><input type="hidden" name="next" value="<%= next %>">
+ <label class="l">Username<input name="username" autocomplete="username" required></label>
+ <label class="l">Password<input type="password" name="password" autocomplete="current-password" required></label>
+ <button class="btn acc">Log in</button></form>
+<p class="kind">New here? <a href="/signup">Create an account</a></p></div>
+<%- include('partials/foot') %>

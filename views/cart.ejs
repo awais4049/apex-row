@@ -1,0 +1,11 @@
+<%- include('partials/head') %>
+<h2>Your cart</h2>
+<% if (!items.length) { %><p class="empty">Your cart is empty. <a href="/">Browse the cars</a>.</p><% } else { %>
+<div class="tw"><table><thead><tr><th>Car</th><th>Price</th><th></th></tr></thead><tbody>
+<% items.forEach(i => { %><tr><td><a href="/cars/<%= i.id %>"><%= i.brand %> <%= i.model %></a><%= i.stock < 1 ? ' (sold out)' : '' %></td><td><%= money(i.price_usd) %></td>
+<td><form method="post" action="/cart/remove/<%= i.id %>"><button class="btn ghost">Remove</button></form></td></tr><% }) %></tbody></table></div>
+<p class="row"><span>Total</span><b><%= money(total) %></b></p>
+<p class="row"><span>Deposit due today (5%)</span><b><%= money(Math.round(total * 0.05)) %></b></p>
+<form method="post" action="/checkout"><button class="btn acc">Reserve with deposit</button></form>
+<% } %>
+<%- include('partials/foot') %>

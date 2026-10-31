@@ -1,0 +1,7 @@
+<%- include('partials/head') %>
+<h2>Your orders</h2>
+<% if (!orders.length) { %><p class="empty">You have no orders yet.</p><% } else { %>
+<div class="tw"><table><thead><tr><th>#</th><th>Date</th><th>Cars</th><th>Total</th><th>Deposit</th><th>Status</th></tr></thead><tbody>
+<% orders.forEach(o => { %><tr><td><%= o.id %></td><td><%= date(o.created_at) %></td><td><%= o.items %></td><td><%= money(o.total) %></td><td><%= money(o.deposit_usd) %></td><td><%= o.status %></td></tr><% }) %></tbody></table></div>
+<% } %>
+<%- include('partials/foot') %>

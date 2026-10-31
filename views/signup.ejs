@@ -1,0 +1,10 @@
+<%- include('partials/head') %>
+<div class="box"><h2>Create an account</h2>
+<% if (error) { %><div class="flash err" role="alert"><%= error %></div><% } %>
+<form method="post" action="/signup">
+ <label class="l">Username<input name="username" value="<%= v.username || '' %>" autocomplete="username" required></label>
+ <label class="l">Email<input type="email" name="email" value="<%= v.email || '' %>" autocomplete="email" required></label>
+ <label class="l">Password (6+ characters)<input type="password" name="password" autocomplete="new-password" required></label>
+ <button class="btn acc">Sign up</button></form>
+<p class="kind">Already registered? <a href="/login">Log in</a></p></div>
+<%- include('partials/foot') %>

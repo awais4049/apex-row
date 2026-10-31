@@ -1,0 +1,6 @@
+<%- include('../partials/head') %>
+<h2>Manage cars</h2><%- include('nav') %>
+<p><a class="btn acc" href="/admin/products/new">Add a car</a></p>
+<div class="tw"><table><thead><tr><th>#</th><th>Car</th><th>Type</th><th>Price</th><th>Stock</th><th>Photos</th><th></th></tr></thead><tbody>
+<% rows.forEach(r => { %><tr><td><%= r.id %></td><td><%= r.brand %> <%= r.model %></td><td><%= r.category %></td><td><%= money(r.price_usd) %></td><td><%= r.stock %></td><td><%= r.photos %></td><td><a href="/admin/products/<%= r.id %>/edit">Edit</a></td></tr><% }) %></tbody></table></div>
+<%- include('../partials/foot') %>

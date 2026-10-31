@@ -1,0 +1,41 @@
+<%- include('../partials/head') %>
+<% const c = car || {}; const v = k => (c[k] === null || c[k] === undefined ? '' : c[k]); const isNew = !c.id; %>
+<h2><%= isNew ? 'Add a car' : 'Edit ' + (c.model || '') %></h2><%- include('nav') %>
+<% if (error) { %><div class="flash err" role="alert"><%= error %></div><% } %>
+<% if (!isNew) { %>
+ <h3>Photos</h3>
+ <div class="thumbs2">
+ <% images.forEach(i => { %><figure><img src="/cars/<%= c.id %>/image?n=<%= i.id %>" alt="Photo"><figcaption><%= i.is_primary ? 'Main photo' : '' %>
+  <% if (!i.is_primary) { %><form method="post" action="/admin/images/<%= i.id %>/primary"><button>Make main</button></form><% } %>
+  <form method="post" action="/admin/images/<%= i.id %>/delete"><button>Remove</button></form></figcaption></figure><% }) %>
+ <% if (!images.length) { %><p class="kind">No photos yet. The store shows an illustration. Add photos below.</p><% } %>
+ </div>
+<% } %>
+<form method="post" enctype="multipart/form-data" action="<%= isNew ? '/admin/products' : '/admin/products/' + c.id %>">
+<div class="f">
+ <label class="l">Brand<select name="brand_id"><% brands.forEach(b => { %><option value="<%= b.id %>" <%= Number(c.brand_id) === b.id ? 'selected' : '' %>><%= b.name %></option><% }) %></select></label>
+ <label class="l">Or a new brand<input name="new_brand" placeholder="Leave empty to use the brand on the left"></label>
+ <label class="l">Model *<input name="model" value="<%= v('model') %>" required></label>
+ <label class="l">Model year<input type="number" name="model_year" value="<%= v('model_year') %>"></label>
+ <label class="l">Price (USD) *<input type="number" name="price_usd" min="1" value="<%= v('price_usd') %>" required></label>
+ <label class="l">Stock<input type="number" name="stock" min="0" value="<%= c.stock === undefined ? 1 : c.stock %>"></label>
+ <label class="l">Category<select name="category_id"><% cats.forEach(k => { %><option value="<%= k.id %>" <%= Number(c.category_id) === k.id ? 'selected' : '' %>><%= k.name %></option><% }) %></select></label>
+ <label class="l">Fuel<select name="fuel"><% ['Gas','Hybrid','Electric'].forEach(x => { %><option <%= c.fuel === x ? 'selected' : '' %>><%= x %></option><% }) %></select></label>
+ <label class="l">Power (hp)<input type="number" name="hp" value="<%= v('hp') %>"></label>
+ <label class="l">Torque (lb-ft)<input type="number" name="torque_lbft" value="<%= v('torque_lbft') %>"></label>
+ <label class="l">0-60 mph (s)<input type="number" step="0.1" name="zero_to_sixty" value="<%= v('zero_to_sixty') %>"></label>
+ <label class="l">Top speed (mph)<input type="number" name="top_speed_mph" value="<%= v('top_speed_mph') %>"></label>
+ <label class="l">Engine<input name="engine" value="<%= v('engine') %>"></label>
+ <label class="l">Drivetrain<input name="drivetrain" value="<%= v('drivetrain') %>"></label>
+ <label class="l">Transmission<input name="transmission" value="<%= v('transmission') %>"></label>
+ <label class="l">Seats<input type="number" name="seats" value="<%= c.seats === undefined ? 2 : v('seats') %>"></label>
+ <label class="l">Body color<input type="color" name="body_hex" value="<%= c.body_hex || '#c8102e' %>"></label>
+ <label class="l">Illustration shape (used when there is no photo)<select name="shape"><% [['coupe','Coupe'],['mid','Mid-engine'],['conv','Convertible']].forEach(x => { %><option value="<%= x[0] %>" <%= c.shape === x[0] ? 'selected' : '' %>><%= x[1] %></option><% }) %></select></label>
+ <label class="l">Available colors (Ctrl or Cmd for several)<select name="color_ids" multiple size="4"><% colors.forEach(k => { %><option value="<%= k.id %>" <%= sel.includes(k.id) ? 'selected' : '' %>><%= k.name %></option><% }) %></select></label>
+ <label class="l"><%= isNew ? 'Photos (the first is the main photo)' : 'Add photos' %><input type="file" name="images" accept="image/jpeg,image/png,image/webp,image/gif" multiple></label>
+</div>
+<label class="l">Description<textarea name="description" rows="3"><%= v('description') %></textarea></label>
+<p><button class="btn acc"><%= isNew ? 'Save car' : 'Save changes' %></button></p>
+</form>
+<% if (!isNew) { %><form method="post" action="/admin/products/<%= c.id %>/delete"><button class="btn danger">Delete this car</button></form><% } %>
+<%- include('../partials/foot') %>

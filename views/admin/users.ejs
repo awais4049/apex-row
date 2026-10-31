@@ -1,0 +1,6 @@
+<%- include('../partials/head') %>
+<h2>Users</h2><%- include('nav') %>
+<div class="tw"><table><thead><tr><th>#</th><th>Username</th><th>Email</th><th>Role</th><th>Joined</th><th>Orders</th><th></th></tr></thead><tbody>
+<% rows.forEach(u => { %><tr><td><%= u.id %></td><td><%= u.username %></td><td><%= u.email %></td><td><%= u.role %></td><td><%= date(u.created_at) %></td><td><%= u.orders %></td>
+<td><% if (u.id !== user.id) { %><form method="post" action="/admin/users/<%= u.id %>/role"><input type="hidden" name="role" value="<%= u.role === 'admin' ? 'customer' : 'admin' %>"><button class="btn ghost"><%= u.role === 'admin' ? 'Make customer' : 'Make admin' %></button></form><% } %></td></tr><% }) %></tbody></table></div>
+<%- include('../partials/foot') %>

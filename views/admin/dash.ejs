@@ -1,0 +1,10 @@
+<%- include('../partials/head') %>
+<h2>Admin</h2><%- include('nav') %>
+<div class="stats">
+ <div class="stat"><b><%= s.cars %></b>Cars</div><div class="stat"><b><%= s.users %></b>Users</div><div class="stat"><b><%= s.orders %></b>Active orders</div>
+ <div class="stat"><b><%= money(s.reserved) %></b>Reserved value</div><div class="stat"><b><%= money(s.deposits) %></b>Deposits</div>
+</div>
+<h2>Low stock</h2>
+<% if (!low.length) { %><p class="empty">Nothing is running low.</p><% } else { %><div class="tw"><table><thead><tr><th>Car</th><th>Stock</th></tr></thead><tbody>
+<% low.forEach(l => { %><tr><td><a href="/admin/products/<%= l.id %>/edit"><%= l.brand %> <%= l.model %></a></td><td><%= l.stock %></td></tr><% }) %></tbody></table></div><% } %>
+<%- include('../partials/foot') %>
