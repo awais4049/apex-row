@@ -78,3 +78,4 @@ Open `http://YOUR-EC2-PUBLIC-IP/`. Health check URL: `/api/health` (returns `{"s
 `/` `/?q=porsche&fuel=Hybrid` `/cars/1` `/signup` `/login` `/cart` `/orders` `/admin` `/admin/products` `/admin/orders` `/admin/users` `/api/health` `/api/products`
 
 Test push for Jenkins
+Test push for Jenkins
